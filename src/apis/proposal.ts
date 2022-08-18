@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { delay } from "../utils";
+// import { delay } from "../utils";
 
 var todoData: any = [];
 
@@ -58,16 +58,21 @@ const remove_todo = async (req: Request, res: Response) => {
 // TaskList Action
 const create_task = async (req: Request, res: Response) => {
     try {
-        const { name, itemname, description, endTime, priority }: any =
-            req.body;
+        const { name, description, endTime, priority }: any = req.body;
 
         await todoData.filter((item: any) => {
             if (item.name === name) {
-                return item.items.push({
-                    itemname: itemname,
+                for (let i = 0; i < item.items.length; i++) {
+                    if (item.items[i].description === description.trim()) {
+                        throw new Error("Task name already exist");
+                    }
+                }
+
+                item.items.push({
                     description: description,
                     endTime: endTime,
                     priority: priority,
+                    status: false,
                 });
             }
         });
@@ -83,18 +88,11 @@ const create_task = async (req: Request, res: Response) => {
 
 const update_task = async (req: Request, res: Response) => {
     try {
-        const {
-            index,
-            name,
-            editName,
-            editDesc,
-            editEndTime,
-            editPriority,
-        }: any = req.body;
+        const { index, name, editDesc, editEndTime, editPriority }: any =
+            req.body;
 
         todoData.filter((item: any) => {
             if (item.name === name) {
-                item.items[index].itemname = editName;
                 item.items[index].description = editDesc;
                 item.items[index].endTime = editEndTime;
                 item.items[index].priority = editPriority;
@@ -112,13 +110,13 @@ const update_task = async (req: Request, res: Response) => {
 
 const delete_task = async (req: Request, res: Response) => {
     try {
-        const { name, itemname }: any = req.body;
+        const { name, description }: any = req.body;
 
         await todoData.filter((item: any) => {
             if (item.name === name) {
                 let index: any = -1;
                 item.items.filter(function (value: any, idx: any, arr: any) {
-                    if (value.itemname === itemname) index = idx;
+                    if (value.description === description) index = idx;
                 });
 
                 item.items.splice(index, 1);
@@ -134,11 +132,31 @@ const delete_task = async (req: Request, res: Response) => {
     }
 };
 
+const complete_task = async (req: Request, res: Response) => {
+    try {
+        const { name, index }: any = req.body;
+
+        todoData.filter((item: any) => {
+            if (item.name === name) {
+                item.items[index].status = true;
+            }
+        });
+
+        res.status(200).json({
+            success: true,
+        });
+    } catch (err: any) {
+        console.log("task complete error : ", err.message);
+        res.status(500).send(err.message);
+    }
+};
+
 export default {
     create_todo,
     remove_todo,
     create_task,
     update_task,
     delete_task,
+    complete_task,
     load_data,
 };

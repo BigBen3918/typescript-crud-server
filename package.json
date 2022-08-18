@@ -1,11 +1,11 @@
 {
     "name": "covenant-server",
     "version": "1.0.0",
-    "main": "/src/serve.ts",
+    "main": "serve.ts",
     "private": true,
     "license": "MIT",
     "scripts": {
-        "serve": "nodemon ./src/serve.ts",
+        "serve": "nodemon ./serve.ts",
         "build": "npm run clean && tsc"
     },
     "dependencies": {

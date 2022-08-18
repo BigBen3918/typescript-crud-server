@@ -4,8 +4,6 @@ import cors from "cors";
 
 // External Modules
 import API from "./apis";
-import config from "./config";
-import ConnectDatabase from "./config/database";
 
 // Get router
 const router = express.Router();
@@ -26,7 +24,6 @@ app.use(express.urlencoded({ extended: true }));
 API(router);
 app.use("/api", router);
 
-ConnectDatabase(config.mongoURI);
 app.listen(port, () => {
-    console.log(`Server listening on http://localhost:${port}`);
+    console.log(`Server listening on port ${port}`);
 });

@@ -1,59 +1,7 @@
 import { Request, Response } from "express";
 import { delay } from "../utils";
 
-var todoData: any = [
-    {
-        name: "Todo-1",
-        items: [
-            {
-                itemname: "item-1",
-                description: "this is first item",
-                endTime: "0",
-                priority: 1,
-            },
-            {
-                itemname: "item-2",
-                description: "this is second item",
-                endTime: "0",
-                priority: 3,
-            },
-        ],
-    },
-    {
-        name: "Todo-2",
-        items: [
-            {
-                itemname: "item-1",
-                description: "this is first item",
-                endTime: "0",
-                priority: 1,
-            },
-        ],
-    },
-    {
-        name: "Todo-3",
-        items: [
-            {
-                itemname: "item-1",
-                description: "this is first item",
-                endTime: "0",
-                priority: 2,
-            },
-            {
-                itemname: "item-2",
-                description: "this is second item",
-                endTime: "0",
-                priority: 2,
-            },
-            {
-                itemname: "item-3",
-                description: "this is third item",
-                endTime: "0",
-                priority: 3,
-            },
-        ],
-    },
-];
+var todoData: any = [];
 
 const load_data = async (req: Request, res: Response) => {
     try {
